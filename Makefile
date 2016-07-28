@@ -8,7 +8,7 @@ DP_BEHAVIORAL =
 #DP_CREATIONAL += builder
 #DP_CREATIONAL += factory-method
 #DP_CREATIONAL += prototype
-#DP_CREATIONAL += singleton
+DP_CREATIONAL += singleton
 
 # Structural design patterns
 #DP_STRUCTURAL += adapter
