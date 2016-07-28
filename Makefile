@@ -111,5 +111,8 @@ template-method:
 visitor:
 	gcc $(CFLAGS) -o visitor visitor.c
 
-.PHONY: all creational structural behavioral
+clean:
+	rm -rf $(DP_ALL)
+
+.PHONY: all creational structural behavioral clean
 .PHONY: $(DP_ALL) $(DP_CREATIONAL) $(DP_STRUCTURAL) $(DP_BEHAVIORAL)
