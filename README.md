@@ -15,5 +15,5 @@ Python have built-in support for some of the structural patterns such as
 iterators or decorators.
 
 Granted, the patterns in the book are geared towards object-oriented programming
-languages such as C++, and C is no technically a OOP language. However, this
+languages such as C++, and C is not technically a OOP language. However, this
 adds to the challenge of implementation and deepens my study of them.
