@@ -19,25 +19,25 @@ static unsigned compositeId;
  * - stores child components.
  * - implements child-related operations in the Component interface.
  */
-typedef struct composite_s {
-    void (*operation)(struct composite_s *self);
-    void (*operationAll)(struct composite_s *self);
-    void (*add)(struct composite_s *self, struct composite_s *c);
-    void (*remove)(struct composite_s *self, struct composite_s *c);
-    struct composite_s * (*getChild)(struct composite_s *self, int index);
+typedef struct Composite_s {
+    void (*operation)(struct Composite_s *self);
+    void (*operationAll)(struct Composite_s *self);
+    void (*add)(struct Composite_s *self, struct Composite_s *c);
+    void (*remove)(struct Composite_s *self, struct Composite_s *c);
+    struct Composite_s * (*getChild)(struct Composite_s *self, int index);
 
     int id;
     char *type;
 
-    struct composite_s * child[MAX_CHILDREN];
-} composite_t;
+    struct Composite_s * child[MAX_CHILDREN];
+} Composite_t;
 
-static void compositeOperation(composite_t *this)
+static void compositeOperation(Composite_t *this)
 {
     printf("%s %d: operation\n", this->type, this->id);
 }
 
-static void compositeOperationAll(composite_t *this)
+static void compositeOperationAll(Composite_t *this)
 {
     printf("%s %d: operationAll\n", this->type, this->id);
     for (int k = 0; k < MAX_CHILDREN; k++) {
@@ -50,7 +50,7 @@ static void compositeOperationAll(composite_t *this)
     }
 }
 
-static void compositeAdd(composite_t *this, composite_t *addComposite)
+static void compositeAdd(Composite_t *this, Composite_t *addComposite)
 {
     for (int k = 0; k < MAX_CHILDREN; k++) {
         if (this->child[k] == NULL) {
@@ -61,7 +61,7 @@ static void compositeAdd(composite_t *this, composite_t *addComposite)
     }
 }
 
-static void compositeRemove(composite_t *this, composite_t *removeComposite)
+static void compositeRemove(Composite_t *this, Composite_t *removeComposite)
 {
     for (int k = 0; k < MAX_CHILDREN; k++) {
         if (this->child[k]->id == removeComposite->id) {
@@ -73,7 +73,7 @@ static void compositeRemove(composite_t *this, composite_t *removeComposite)
     }
 }
 
-static composite_t * compositeGetChild(composite_t *this, int index)
+static Composite_t * compositeGetChild(Composite_t *this, int index)
 {
     if (this->child[index] == NULL) {
         printf("%s %d: no child at index %d\n", this->type, this->id, index);
@@ -85,9 +85,9 @@ static composite_t * compositeGetChild(composite_t *this, int index)
     return this->child[index];
 }
 
-composite_t * newComposite(void)
+Composite_t * newComposite(void)
 {
-    composite_t *composite = (composite_t *) malloc(sizeof(composite_t));
+    Composite_t *composite = (Composite_t *) malloc(sizeof(Composite_t));
 
     composite->operation    = compositeOperation;
     composite->operationAll = compositeOperationAll;
@@ -105,11 +105,11 @@ composite_t * newComposite(void)
  * - represents leaf objects in the composition. A leaf has no children.
  * - defines behavior for primitive objects in the composition.
  */
-typedef composite_t leaf_t;
+typedef Composite_t Leaf_t;
 
-leaf_t * newLeaf(void)
+Leaf_t * newLeaf(void)
 {
-    leaf_t *leaf = (leaf_t *) malloc(sizeof(leaf_t));
+    Leaf_t *leaf = (Leaf_t *) malloc(sizeof(Leaf_t));
 
     leaf->operation     = compositeOperation;;
     leaf->operationAll  = NULL;
@@ -128,7 +128,7 @@ leaf_t * newLeaf(void)
  * - implements default behavior for the interface common to all classes
  * - declares an interface for accessing and managing its child components
  */
-typedef composite_t component_t;
+typedef Composite_t component_t;
 
 /**
  * - manipulates objects in the composition through the component interface
@@ -139,13 +139,13 @@ typedef struct client_s {
 
 int main(void)
 {
-    composite_t *composite0 = newComposite();
-    composite_t *composite1 = newComposite();
-    composite_t *composite2 = newComposite();
+    Composite_t *composite0 = newComposite();
+    Composite_t *composite1 = newComposite();
+    Composite_t *composite2 = newComposite();
 
-    leaf_t *leaf3 = newLeaf();
-    leaf_t *leaf4 = newLeaf();
-    leaf_t *leaf5 = newLeaf();
+    Leaf_t *leaf3 = newLeaf();
+    Leaf_t *leaf4 = newLeaf();
+    Leaf_t *leaf5 = newLeaf();
 
     composite0->operation(composite0);
     composite1->operation(composite1);
@@ -166,7 +166,7 @@ int main(void)
 
     composite2->add(composite2, leaf5);
 
-    composite_t *tmp = composite0->getChild(composite0, 2);
+    Composite_t *tmp = composite0->getChild(composite0, 2);
     tmp->operation(tmp);
 
     composite0->operationAll(composite0);

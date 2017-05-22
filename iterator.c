@@ -25,21 +25,21 @@ typedef struct iteratorItem_s {
     struct iteratorItem_s *nextItemPtr;
 } iteratorItem_t;
 
-typedef struct iterator_s {
+typedef struct Iterator_s {
     unsigned size;
     unsigned index;
     iteratorItem_t *firstPtr;
     iteratorItem_t *currentPtr;
-    void (*add)(struct iterator_s *this, void (*funcPtr)(), void *funcArg);
-    void (*drop)(struct iterator_s *this);
-    void (*first)(struct iterator_s *this);
-    void (*next)(struct iterator_s *this);
-    bool (*isDone)(struct iterator_s *this);
-    void (*call)(struct iterator_s *this);
-    void (*traverse)(struct iterator_s *this);
-} iterator_t;
+    void (*add)(struct Iterator_s *this, void (*funcPtr)(), void *funcArg);
+    void (*drop)(struct Iterator_s *this);
+    void (*first)(struct Iterator_s *this);
+    void (*next)(struct Iterator_s *this);
+    bool (*isDone)(struct Iterator_s *this);
+    void (*call)(struct Iterator_s *this);
+    void (*traverse)(struct Iterator_s *this);
+} Iterator_t;
 
-static void add(iterator_t *this, void (*funcPtr)(), void *funcArg)
+static void add(Iterator_t *this, void (*funcPtr)(), void *funcArg)
 {
     iteratorItem_t *itemPtr = calloc(1, sizeof(*itemPtr));
 
@@ -69,7 +69,7 @@ static void add(iterator_t *this, void (*funcPtr)(), void *funcArg)
     this->size++;
 }
 
-static void drop(iterator_t *this)
+static void drop(Iterator_t *this)
 {
     unsigned dropIndex = this->index;
     iteratorItem_t *newNextItemPtr = this->currentPtr->nextItemPtr;
@@ -92,13 +92,13 @@ static void drop(iterator_t *this)
     this->size--;
 }
 
-static void first(iterator_t *this)
+static void first(Iterator_t *this)
 {
     this->currentPtr = this->firstPtr;
     this->index = 0;
 }
 
-static void next(iterator_t *this)
+static void next(Iterator_t *this)
 {
     if (this->index < this->size-1) {
         this->currentPtr = this->currentPtr->nextItemPtr;
@@ -106,18 +106,18 @@ static void next(iterator_t *this)
     }
 }
 
-static bool isDone(iterator_t *this)
+static bool isDone(Iterator_t *this)
 {
     return (this->index == this->size - 1);
 }
 
-static void call(iterator_t *this)
+static void call(Iterator_t *this)
 {
     printf("Calling item %d: ", this->index);
     this->currentPtr->funcPtr(this->currentPtr->funcArg);
 }
 
-static void traverse(iterator_t *this)
+static void traverse(Iterator_t *this)
 {
     if (this->size != 0) {
         printf("Traversing %d items\n", this->size);
@@ -133,13 +133,13 @@ static void traverse(iterator_t *this)
     }
 }
 
-static iterator_t * newIterator(void)
+static Iterator_t * newIterator(void)
 {
-    iterator_t *it;
+    Iterator_t *it;
     /*
      * Allocate memory from the heap
      */
-    it = (iterator_t *) malloc(sizeof(iterator_t));
+    it = (Iterator_t *) malloc(sizeof(Iterator_t));
 
     /*
      * Methods
@@ -169,7 +169,7 @@ static void func4(void) { printf("->func4\n"); }
 
 int main(void)
 {
-    iterator_t *it;
+    Iterator_t *it;
 
     it = newIterator();
 

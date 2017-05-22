@@ -13,28 +13,28 @@
  * - defines an Instance operation that lets clients access its unique instance.
  * - may be responsible for creating its own unique instance.
  */
-typedef struct singleton_s {
+typedef struct Singleton_s {
     int id;
 
-    int (*getInstance)(struct singleton_s *self);
-    void (*operation)(struct singleton_s *self);
-} singleton_t;
+    int (*getInstance)(struct Singleton_s *self);
+    void (*operation)(struct Singleton_s *self);
+} Singleton_t;
 
-static void singletonOperation(singleton_t *this)
+static void singletonOperation(Singleton_t *this)
 {
     printf("Singleton %d: operation\n", this->getInstance(this));
 }
 
-static int singletonGetInstance(singleton_t *this) {
+static int singletonGetInstance(Singleton_t *this) {
     return this->id;
 }
 
 /* Private class constructor, should never be callable */
-static singleton_t * newSingleton(void)
+static Singleton_t * newSingleton(void)
 {
     static int id;
 
-    singleton_t *singleton = (singleton_t *) malloc(sizeof(singleton_t));
+    Singleton_t *singleton = (Singleton_t *) malloc(sizeof(Singleton_t));
 
     singleton->getInstance = singletonGetInstance;
     singleton->operation   = singletonOperation;
@@ -44,9 +44,9 @@ static singleton_t * newSingleton(void)
 }
 
 /* Static class method, hence, global */
-singleton_t * singletonInstance(void)
+Singleton_t * singletonInstance(void)
 {
-    static singleton_t *instance;
+    static Singleton_t *instance;
 
     if (instance == 0) {
         instance = newSingleton();
@@ -57,11 +57,11 @@ singleton_t * singletonInstance(void)
 
 int main(void)
 {
-    singleton_t *firstInstance = singletonInstance();
+    Singleton_t *firstInstance = singletonInstance();
 
     firstInstance->operation(firstInstance);
 
-    singleton_t *secondInstance = singletonInstance();
+    Singleton_t *secondInstance = singletonInstance();
 
     secondInstance->operation(secondInstance);
 
