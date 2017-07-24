@@ -1,4 +1,5 @@
-CFLAGS = -ggdb
+CFLAGS = -ggdb -std=c11
+
 DP_CREATIONAL =
 DP_STRUCTURAL =
 DP_BEHAVIORAL =
