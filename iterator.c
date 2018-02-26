@@ -2,220 +2,166 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/*******************************************************************************
- *    ____________
- *    |           |
- *    | iterator  |
- *    |___________|___________________________
- *          |                                 \
- *          |firstPtr                          |currentPtr (for example)
- *    ______V________                   _______V________
- *    |              |                  |              |
- *    | iteratorItem |-- nextItemPtr -->| iteratorItem |-- nextItemPtr --> ...
- *    |______________|                  |______________|
- *      |          |                      |          |
- *      |          |                      |          |
- *      V          V                      V          V
- *  funcPtr     funcArg                funcPtr    funcArg
- *
- ******************************************************************************/
-typedef struct iteratorItem_s {
-    void (*funcPtr)();
-    void *funcArg;
-    struct iteratorItem_s *nextItemPtr;
-} iteratorItem_t;
+/**
+ * Intent
+ * - Provide a way to access the elements of an aggregate object sequentially
+ *   without exposing its underlying representation.
+ */
 
+/**
+ * Use the Iterator pattern
+ * - to access an aggregate object's contents without exposing its internal
+ *   representation.
+ * - to support multiple traversals of aggregate objects.
+ * - to provide a uniform interface for traversing different aggregate
+ *   structures (that is, to support polymorphic iteration)
+ */
+
+#define MAX_LIST_SIZE 10
+typedef struct List_s {
+    int el[MAX_LIST_SIZE];
+    int count;
+
+    void (*append)(struct List_s *, int);
+    void (*remove)(struct List_s *, int);
+
+    /*
+     * In order for an aggregate class to support iteration, it must have the
+     * ability to create an interator.
+     */
+    struct Iterator_s * (*createIterator)(struct List_s *);
+} List_t;
+
+/*
+ * In this example, we have an aggregate object (e.g. List), but we don't want
+ * to put the iteration mechanics in its class. Instead, we create a
+ * ListIterator class that would perform the traversal for a list object. That
+ * way, we don't need to modify the list object.
+ */
 typedef struct Iterator_s {
-    unsigned size;
-    unsigned index;
-    iteratorItem_t *firstPtr;
-    iteratorItem_t *currentPtr;
-    void (*add)(struct Iterator_s *this, void (*funcPtr)(), void *funcArg);
-    void (*drop)(struct Iterator_s *this);
-    void (*first)(struct Iterator_s *this);
-    void (*next)(struct Iterator_s *this);
-    bool (*isDone)(struct Iterator_s *this);
-    void (*call)(struct Iterator_s *this);
-    void (*traverse)(struct Iterator_s *this);
+    int current;
+    struct List_s *list;
+
+    void (*first)(struct Iterator_s *);
+    void (*next)(struct Iterator_s *);
+    bool (*isDone)(struct Iterator_s *);
+    int (*currentItem)(struct Iterator_s *);
 } Iterator_t;
 
-static void add(Iterator_t *this, void (*funcPtr)(), void *funcArg)
+void iteratorFirst(Iterator_t *iter)
 {
-    iteratorItem_t *itemPtr = calloc(1, sizeof(*itemPtr));
+    iter->current = 0;
+}
 
-    if (itemPtr == NULL) {
-        return;
-    }
+void iteratorNext(Iterator_t *iter)
+{
+    iter->current++;
+}
 
-    itemPtr->funcPtr = funcPtr;
-    itemPtr->funcArg = funcArg;
+bool iteratorIsDone(Iterator_t *iter)
+{
+    return iter->current >= iter->list->count;
+}
 
-    if (this->size == 0) {
-        if (this->firstPtr != NULL) {
-            free(this->firstPtr);
-        }
-        this->firstPtr = itemPtr;
-        this->first(this);
+int iteratorCurrentItem(Iterator_t *iter)
+{
+    if (!iter->isDone(iter)) {
+        return iter->list->el[iter->current];
     } else {
-        this->first(this);
-        while (!this->isDone(this)) {
-            this->next(this);
+        /* No exception handling. Simply denote -1 as out of bounds. */
+        return -1;
+    }
+}
+
+Iterator_t * newIterator(struct List_s *list)
+{
+    Iterator_t *iter = (Iterator_t *) malloc(sizeof(Iterator_t));
+
+    iter->current = 0;
+    iter->list = list;
+
+    iter->first = iteratorFirst;
+    iter->next = iteratorNext;
+    iter->isDone = iteratorIsDone;
+    iter->currentItem = iteratorCurrentItem;
+
+    return iter;
+}
+
+/*
+ * This is the aggregate class. In this example, it's a simple array list.
+ *
+ * The responsibilities of this class are simple. You may simply add an element
+ * into it, remove an element, and count the number of elements. There is no
+ * "traversal" or "iterating" mechanism built in. For that, we will create a
+ * ListIterator subclass.
+ */
+typedef struct ListIterator_s {
+    List_t *list;
+    int current;
+
+    void (*first)(struct Iterator_s *);
+    void (*next)(struct Iterator_s *);
+    bool (*isDone)(struct Iterator_s *);
+    void *(*currentItem)(struct Iterator_s *);
+} ListIterator_t;
+
+void listAppend(List_t * list, int el)
+{
+    list->el[list->count++] = el;
+}
+
+void listRemove(List_t * list, int el)
+{
+    /* Remove the first instance of 'el' */
+    for (int k = 0; k < list->count; k++) {
+        if (list->el[k] == el) {
+            /* Move the remaining elements 'back' */
+            int j;
+            for (j = 0; j < MAX_LIST_SIZE - 1; j++) {
+                list->el[k+j] = list->el[k+j+1];
+            }
+            list->el[j] = 0;
+            list->count--;
+
+            break;
         }
-        this->currentPtr->nextItemPtr = itemPtr;
-        this->index++;
-    }
-
-    printf("Add item %d\n", this->size);
-    this->size++;
-}
-
-static void drop(Iterator_t *this)
-{
-    unsigned dropIndex = this->index;
-    iteratorItem_t *newNextItemPtr = this->currentPtr->nextItemPtr;
-    iteratorItem_t *droppedItemPtr = this->currentPtr;
-
-    if (dropIndex == 0) {
-        this->firstPtr = newNextItemPtr;
-    } else {
-        unsigned k;
-        this->first(this);
-        for (k = 0; k < dropIndex-1; k++) {
-            this->next(this);
-        }
-        this->currentPtr->nextItemPtr = newNextItemPtr;
-    }
-
-    free(droppedItemPtr);
-
-    printf("Dropping index %d\n", dropIndex);
-    this->size--;
-}
-
-static void first(Iterator_t *this)
-{
-    this->currentPtr = this->firstPtr;
-    this->index = 0;
-}
-
-static void next(Iterator_t *this)
-{
-    if (this->index < this->size-1) {
-        this->currentPtr = this->currentPtr->nextItemPtr;
-        this->index++;
     }
 }
 
-static bool isDone(Iterator_t *this)
+List_t * newList(void)
 {
-    return (this->index == this->size - 1);
+    List_t *list = (List_t *) malloc(sizeof(List_t));
+
+    list->count = 0;
+    list->append = listAppend;
+    list->remove = listRemove;
+    list->createIterator = newIterator;
+
+    return list;
 }
-
-static void call(Iterator_t *this)
-{
-    printf("Calling item %d: ", this->index);
-    this->currentPtr->funcPtr(this->currentPtr->funcArg);
-}
-
-static void traverse(Iterator_t *this)
-{
-    if (this->size != 0) {
-        printf("Traversing %d items\n", this->size);
-        this->first(this);
-        while (!this->isDone(this)) {
-            this->call(this);
-            this->next(this);
-        }
-        this->call(this);
-    }
-    else {
-        printf("Nothing to traverse\n");
-    }
-}
-
-static Iterator_t * newIterator(void)
-{
-    Iterator_t *it;
-    /*
-     * Allocate memory from the heap
-     */
-    it = (Iterator_t *) malloc(sizeof(Iterator_t));
-
-    /*
-     * Methods
-     */
-    it->add = add;
-    it->drop = drop;
-    it->first = first;
-    it->next = next;
-    it->isDone = isDone;
-    it->call = call;
-    it->traverse = traverse;
-
-    /*
-     * Data
-     */
-    it->size = 0;
-    it->index = 0;
-
-    return it;
-}
-
-static void func0(int x) { printf("->func0(%d)\n", x); }
-static void func1(void) { printf("->func1\n"); }
-static void func2(void) { printf("->func2\n"); }
-static void func3(void) { printf("->func3\n"); }
-static void func4(void) { printf("->func4\n"); }
 
 int main(void)
 {
-    Iterator_t *it;
+    List_t *list = newList();
 
-    it = newIterator();
+    list->append(list, 0);
+    list->append(list, 1);
+    list->append(list, 2);
+    list->append(list, 3);
 
-    /*
-     * Examples of using the iterator.
-     */
-    it->add(it, func0, (void *) 999);
-    it->traverse(it);
+    list->remove(list, 0);
 
-    it->add(it, func1, NULL);
-    it->traverse(it);
+    Iterator_t *listIterator = list->createIterator(list);
 
-    it->add(it, func2, NULL);
-    it->add(it, func3, NULL);
-    it->add(it, func4, NULL);
-    it->traverse(it);
-    it->drop(it);
-    it->traverse(it);
-
-    printf("Go back to the first item and manually call\n");
-
-    it->first(it);
-    it->call(it);
-    it->next(it);
-    it->call(it);
-    it->next(it);
-    it->call(it);
-    it->drop(it);
-    it->traverse(it);
-
-    it->first(it);
-    it->drop(it);
-    it->traverse(it);
-
-    it->drop(it);
-    it->traverse(it);
-
-    it->drop(it);
-    it->traverse(it);
-
-    it->add(it, func4, NULL);
-    it->add(it, func3, NULL);
-    it->add(it, func2, NULL);
-    it->traverse(it);
-
-    free(it);
+    /* Print all the list contents */
+    int k = 0;
+    for (listIterator->first(listIterator);
+        !listIterator->isDone(listIterator);
+         listIterator->next(listIterator)) {
+        printf("list[%d] is '%d'\n", k++,
+               listIterator->currentItem(listIterator));
+    }
 
     return 0;
 }
