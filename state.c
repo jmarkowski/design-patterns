@@ -125,4 +125,6 @@ int main(void)
      * inside the state class. If it's the latter, the State_t class would need
      * to know about Context_t.
      */
+
+    return 0;
 }
