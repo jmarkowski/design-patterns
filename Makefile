@@ -13,7 +13,7 @@ DP_CREATIONAL += singleton
 
 # Structural design patterns
 #DP_STRUCTURAL += adapter
-#DP_STRUCTURAL += bridge
+DP_STRUCTURAL += bridge
 DP_STRUCTURAL += composite
 DP_STRUCTURAL += decorator
 #DP_STRUCTURAL += facade
