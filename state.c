@@ -22,83 +22,119 @@
 
 #define MAX_STATE_ID 10
 
+typedef struct State_s State_t;
+typedef struct Context_s Context_t;
 /*
- * The state class describes all the possible things that it can do within a
- * given context.
- *
- * However, as the states are changed, we only "activate" particular behaviours.
+ * Each state has a set of actions it can do at that state, and for the given
+ * context, it can change the state.
  */
-typedef struct State_s {
-    void (*doA)(struct State_s *);
-    void (*doB)(struct State_s *);
-
+struct State_s {
     char id[MAX_STATE_ID];
-} State_t;
 
-State_t *newState(char *id, void (doA)(State_t *),
-                            void (doB)(State_t *))
-{
-    State_t *s = (State_t *) malloc(sizeof(State_t));
-
-    s->doA = doA;
-    s->doB = doB;
-
-    strncpy(s->id, id, MAX_STATE_ID);
-
-    return s;
-}
-
-void stateX_doA(State_t *s) { printf("X doing A\n"); }
-void stateX_doB(State_t *s) { printf("X can't do B!\n"); }
-
-void stateY_doA(State_t *s) { printf("Y can't do A!\n"); }
-void stateY_doB(State_t *s) { printf("Y doing B\n"); }
-
-void stateZ_doA(State_t *s) { printf("Z doing A\n"); }
-void stateZ_doB(State_t *s) { printf("Z doing B\n"); }
+    void (*changeState)(Context_t *, State_t *);
+    State_t *(*action)(Context_t *);
+};
 
 /*
  * Configure context (i.e. whatever it is that is subject to states)
  */
-typedef struct Context_s {
-    void (*changeState)(struct Context_s *, struct State_s *);
-
-    void (*doA)(struct Context_s *);
-    void (*doB)(struct Context_s *);
-
+struct Context_s {
     State_t *currentState;
-} Context_t;
+    State_t *nextState;
+    State_t *stateX;
+    State_t *stateY;
+    State_t *stateZ;
+
+    void (*changeState)(Context_t *, State_t *);
+    void (*begin)(Context_t *);
+    void (*end)(Context_t *);
+    void (*step)(Context_t *);
+};
+
+void stateChangeState(Context_t *c, State_t *s)
+{
+    State_t *oldState = c->currentState;
+    State_t *nextState = s->action(c);
+    State_t *newState = s;
+
+    c->currentState = s;
+    c->nextState = nextState;
+
+    printf("\tChanged from %s to %s (next is %s)\n",
+           oldState->id,
+           newState->id,
+           nextState->id);
+
+}
+
+State_t *newState(char *id, State_t *(*action)(Context_t *))
+{
+    State_t *s = (State_t *) malloc(sizeof(State_t));
+
+    strncpy(s->id, id, MAX_STATE_ID);
+
+    s->changeState = stateChangeState;
+    s->action = action;
+
+    return s;
+}
+
+State_t * actionX(Context_t *c)
+{
+    printf("Doing action X");
+    return c->stateY;
+}
+
+State_t * actionY(Context_t *c)
+{
+    printf("Doing action Y");
+    return c->stateZ;
+}
+
+State_t * actionZ(Context_t *c)
+{
+    printf("Doing action Z");
+    return c->stateX;
+}
 
 void contextChangeState(Context_t *c, State_t *newState)
 {
-    State_t *oldState = c->currentState;
-    printf("Changing from %s to %s...\n", oldState->id, newState->id);
-    c->currentState = newState;
+    c->currentState->changeState(c, newState);
 }
 
-void contextDoA(Context_t *c)
+void contextBegin(Context_t *c)
 {
-    if (c->currentState) {
-        c->currentState->doA(c->currentState);
-    }
+    printf("BEGIN:\t");
+    c->changeState(c, c->stateX);
 }
 
-void contextDoB(Context_t *c)
+void contextStep(Context_t *c)
 {
-    if (c->currentState) {
-        c->currentState->doB(c->currentState);
-    }
+    printf("STEP:\t");
+    c->changeState(c, c->nextState);
 }
 
-Context_t *newContext(State_t *initialState)
+void contextEnd(Context_t *c)
+{
+    printf("END:\t");
+    c->changeState(c, c->stateZ);
+}
+
+Context_t *newContext(State_t *stateX,
+                      State_t *stateY,
+                      State_t *stateZ)
 {
     Context_t *c = (Context_t *) malloc(sizeof(Context_t));
 
-    c->changeState = contextChangeState;
-    c->doA = contextDoA;
-    c->doB = contextDoB;
+    c->currentState = stateX;
+    c->stateX = stateX;
+    c->stateY = stateY;
+    c->stateZ = stateZ;
 
-    c->currentState = initialState;
+    c->changeState = contextChangeState;
+    c->begin = contextBegin;
+    c->step = contextStep;
+    c->end = contextEnd;
 
     return c;
 }
@@ -108,32 +144,22 @@ int main(void)
     /*
      * These are the concrete states
      */
-    State_t *stateX = newState("X", stateX_doA, stateX_doB);
-    State_t *stateY = newState("Y", stateY_doA, stateY_doB);
-    State_t *stateZ = newState("Z", stateZ_doA, stateZ_doB);
+    State_t *stateX = newState("X", actionX);
+    State_t *stateY = newState("Y", actionY);
+    State_t *stateZ = newState("Z", actionZ);
 
-    Context_t *c = newContext(stateX); /* initialize at state X */
+    Context_t *c = newContext(stateX, stateY, stateZ);
 
-    /* State X can only do A */
-    c->doA(c);
-    c->doB(c);
+    c->begin(c); /* Start at State X */
 
-    /* State Y can only do B */
-    c->changeState(c, stateY);
-    c->doA(c);
-    c->doB(c);
+    c->step(c);  /* State Y */
+    c->step(c);  /* State Z */
+    c->step(c);  /* State X */
+    c->step(c);  /* State Y */
+    c->step(c);  /* State Z */
+    c->step(c);  /* State X */
 
-    /* State Z can do both A and B */
-    c->changeState(c, stateZ);
-    c->doA(c);
-    c->doB(c);
-
-    /*
-     * Above we manually change the state transitions. However, in practice this
-     * would likely be handled either inside of Context_t, or perhaps even
-     * inside the state class. If it's the latter, the State_t class would need
-     * to know about Context_t.
-     */
+    c->end(c);  /* End at State Z */
 
     return 0;
 }
