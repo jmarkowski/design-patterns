@@ -31,7 +31,7 @@ DP_BEHAVIORAL += iterator
 DP_BEHAVIORAL += state
 DP_BEHAVIORAL += strategy
 #DP_BEHAVIORAL += template-method
-#DP_BEHAVIORAL += visitor
+DP_BEHAVIORAL += visitor
 
 DP_ALL = $(DP_CREATIONAL) $(DP_STRUCTURAL) $(DP_BEHAVIORAL)
 
