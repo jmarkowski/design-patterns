@@ -43,74 +43,74 @@ structural: $(DP_STRUCTURAL)
 
 behavioural: $(DP_BEHAVIORAL)
 
-abstract-factory:
-	gcc $(CFLAGS) -o abstract-factory abstract-factory.c
+abstract-factory: abstract-factory.c
+	gcc $(CFLAGS) -o $@ $<
 
-builder:
-	gcc $(CFLAGS) -o builder builder.c
+builder: builder.c
+	gcc $(CFLAGS) -o $@ $<
 
-factory-method:
-	gcc $(CFLAGS) -o factory-method factory-method.c
+factory-method: factory-method.c
+	gcc $(CFLAGS) -o $@ $<
 
-prototype:
-	gcc $(CFLAGS) -o prototype prototype.c
+prototype: prototype.c
+	gcc $(CFLAGS) -o $@ $<
 
-singleton:
-	gcc $(CFLAGS) -o singleton singleton.c
+singleton: singleton.c
+	gcc $(CFLAGS) -o $@ $<
 
-adapter:
-	gcc $(CFLAGS) -o adapter adapter.c
+adapter: adapter.c
+	gcc $(CFLAGS) -o $@ $<
 
-bridge:
-	gcc $(CFLAGS) -o bridge bridge.c
+bridge: bridge.c
+	gcc $(CFLAGS) -o $@ $<
 
-composite:
-	gcc $(CFLAGS) -o composite composite.c
+composite: composite.c
+	gcc $(CFLAGS) -o $@ $<
 
-decorator:
-	gcc $(CFLAGS) -o decorator decorator.c
+decorator: decorator.c
+	gcc $(CFLAGS) -o $@ $<
 
-facade:
-	gcc $(CFLAGS) -o facade facade.c
+facade: facade.c
+	gcc $(CFLAGS) -o $@ $<
 
-flyweight:
-	gcc $(CFLAGS) -o flyweight flyweight.c
+flyweight: flyweight.c
+	gcc $(CFLAGS) -o $@ $<
 
-proxy:
-	gcc $(CFLAGS) -o proxy proxy.c
+proxy: proxy.c
+	gcc $(CFLAGS) -o $@ $<
 
-chain-of-responsibility:
-	gcc $(CFLAGS) -o chain-of-responsibility chain-of-responsibility.c
+chain-of-responsibility: chain-of-responsibility.c
+	gcc $(CFLAGS) -o $@ $<
 
-command:
-	gcc $(CFLAGS) -o command command.c
+command: command.c
+	gcc $(CFLAGS) -o $@ $<
 
-interpreter:
-	gcc $(CFLAGS) -o interpreter interpreter.c
+interpreter: interpreter.c
+	gcc $(CFLAGS) -o $@ $<
 
-iterator:
-	gcc $(CFLAGS) -o iterator iterator.c
+iterator: iterator.c
+	gcc $(CFLAGS) -o $@ $<
 
-mediator:
-	gcc $(CFLAGS) -o mediator mediator.c
+mediator: mediator.c
+	gcc $(CFLAGS) -o $@ $<
 
-memento:
-	gcc $(CFLAGS) -o memento memento.c
+memento: memento.c
+	gcc $(CFLAGS) -o $@ $<
 
-observer:
-	gcc $(CFLAGS) -o observer observer.c
+observer: observer.c
+	gcc $(CFLAGS) -o $@ $<
 
-state:
-	gcc $(CFLAGS) -o state state.c
+state: state.c
+	gcc $(CFLAGS) -o $@ $<
 
-strategy:
-	gcc $(CFLAGS) -o strategy strategy.c
+strategy: strategy.c
+	gcc $(CFLAGS) -o $@ $<
 
-template-method:
-	gcc $(CFLAGS) -o template-method template-method.c
+template-method: template-method.c
+	gcc $(CFLAGS) -o $@ $<
 
-visitor:
-	gcc $(CFLAGS) -o visitor visitor.c
+visitor: visitor.c
+	gcc $(CFLAGS) -o $@ $<
 
 clean:
 	rm -rf $(DP_ALL)
