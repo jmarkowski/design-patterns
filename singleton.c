@@ -2,6 +2,12 @@
 #include <stdlib.h>
 
 /**
+ * Intent
+ * - Ensure a class only has one instance, and provide a global point of access
+ *   to it.
+ */
+
+/**
  * Use the Singleton pattern when
  * - there must be exactly one instance of a class, and it must be accessible
  *   to clients from a well-known access point.

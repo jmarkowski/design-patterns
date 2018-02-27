@@ -3,6 +3,12 @@
 #include <string.h>     /* for strcmp */
 
 /**
+ * Intent
+ * - Provide an interface for creating families of related or dependent objects
+ *   without specifying their concrete classes.
+ */
+
+/**
  * Use the Abstract Factory pattern when
  * - A system should be independent of how its products are created, composed,
  *   and represented.

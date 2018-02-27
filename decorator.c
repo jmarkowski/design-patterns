@@ -2,6 +2,12 @@
 #include <stdlib.h>
 
 /**
+ * Intent
+ * - Attach additional responsibilities to an object dynamically. Decorators
+ *   provide a flexible alternative to subclassing for extending functionality.
+ */
+
+/**
  * Use the Decorator
  * - to add responsibilities to individual objects dynamically and
  *   transparently, that is, without affecting other objects
@@ -59,6 +65,10 @@ int main(void)
 
     component->operation("Component");
 
+    /*
+     * The power in the decorator is here, where you can take an existing
+     * component and then "decorate" it with some added functionality.
+     */
     Decorator_t *decoratedComponent = newDecorator(component);
 
     decoratedComponent->operation("Decorated Component");

@@ -3,6 +3,12 @@
 #include <string.h> /* for strncpy */
 
 /**
+ * Intent
+ * - Allow an object to alter its behaviour when its internal state changes. The
+ *   object will appear to change its class.
+ */
+
+/**
  * Use the State pattern when
  * - An object's behaviour depends on its state, and it must change its
  *   behaviour at run-time depending on that state.
@@ -17,7 +23,10 @@
 #define MAX_STATE_ID 10
 
 /*
- * Configure states
+ * The state class describes all the possible things that it can do within a
+ * given context.
+ *
+ * However, as the states are changed, we only "activate" particular behaviours.
  */
 typedef struct State_s {
     void (*doA)(struct State_s *);

@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_ALGORITHM_NAME_LEN 24
+/**
+ * Intent
+ * - Define a family of algorithms, encapsulate each one, and make them
+ *   interchangeable. Strategy lets the algorithm vary indepndently from clients
+ *   that use it.
+ */
 
 /**
  * Use the Strategy pattern when
@@ -17,6 +22,8 @@
  *   statements in its operations. Instead of many conditionals, move related
  *   conditional branches into their own Strategy class.
  */
+
+#define MAX_ALGORITHM_NAME_LEN 24
 
 typedef struct Strategy_s {
     /*

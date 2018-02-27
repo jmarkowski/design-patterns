@@ -2,6 +2,13 @@
 #include <stdlib.h>
 
 /**
+ * Intent
+ * - Compose objects into tree structures to represent part-whole heirarchies.
+ *   Composite lets clients treat individual objects and compositions of objects
+ *   uniformly.
+ */
+
+/**
  * Use the Composite pattern when
  * - you want to represent part-whole heirarchies of objects.
  * - you want clients to be able to ignore the difference between compositions
