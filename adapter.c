@@ -80,6 +80,21 @@ void adapterDisplayText(Adapter_t *adapter, const char * text)
     adaptee->printText(adaptee);
 }
 
+void unadaptedDisplayText(Target_t *target, const char * text)
+{
+    printf("text: %s\n", text);
+}
+
+Target_t *newTarget(void)
+{
+    Target_t *target = (Target_t *) malloc(sizeof(Target_t));
+
+    target->displayText = unadaptedDisplayText;;
+    target->adaptee = NULL;
+
+    return target;
+}
+
 Adapter_t *newAdapter(Adaptee_t *adaptee)
 {
     Adapter_t *adapter = (Adapter_t *) malloc(sizeof(Adapter_t));
@@ -93,13 +108,16 @@ Adapter_t *newAdapter(Adaptee_t *adaptee)
 int main(void)
 {
     Adaptee_t *adaptee = newAdaptee();
-    Target_t *target = (Target_t *) newAdapter(adaptee);
+    Target_t *unadaptedTarget = (Target_t *) newTarget();
+    Target_t *adaptedTarget = (Target_t *) newAdapter(adaptee);
+
+    unadaptedTarget->displayText(unadaptedTarget, "UNADAPTED TARGET");
 
     /*
      * Pretending that the client only understands how to do a 'request', which
      * is a method the Adaptee doesn't have.
      */
-    target->displayText(target, "DESIGN PATTERNS");
+    adaptedTarget->displayText(adaptedTarget, "ADAPTED TARGET");
 
     return 0;
 }
