@@ -17,7 +17,7 @@ DP_STRUCTURAL += bridge
 DP_STRUCTURAL += composite
 DP_STRUCTURAL += decorator
 #DP_STRUCTURAL += facade
-#DP_STRUCTURAL += flyweight
+DP_STRUCTURAL += flyweight
 #DP_STRUCTURAL += proxy
 
 # Behavioural design patterns
