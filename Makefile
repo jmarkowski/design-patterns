@@ -7,7 +7,7 @@ DP_BEHAVIORAL =
 # Creational design patterns
 DP_CREATIONAL += abstract-factory
 #DP_CREATIONAL += builder
-#DP_CREATIONAL += factory-method
+DP_CREATIONAL += factory-method
 #DP_CREATIONAL += prototype
 DP_CREATIONAL += singleton
 
