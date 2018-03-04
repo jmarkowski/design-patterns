@@ -30,7 +30,7 @@ DP_BEHAVIORAL += mediator
 DP_BEHAVIORAL += observer
 DP_BEHAVIORAL += state
 DP_BEHAVIORAL += strategy
-#DP_BEHAVIORAL += template-method
+DP_BEHAVIORAL += template-method
 DP_BEHAVIORAL += visitor
 
 DP_ALL = $(DP_CREATIONAL) $(DP_STRUCTURAL) $(DP_BEHAVIORAL)
