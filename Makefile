@@ -18,7 +18,7 @@ DP_STRUCTURAL += composite
 DP_STRUCTURAL += decorator
 DP_STRUCTURAL += facade
 DP_STRUCTURAL += flyweight
-#DP_STRUCTURAL += proxy
+DP_STRUCTURAL += proxy
 
 # Behavioural design patterns
 #DP_BEHAVIORAL += chain-of-responsibility
