@@ -21,7 +21,7 @@ DP_STRUCTURAL += flyweight
 DP_STRUCTURAL += proxy
 
 # Behavioural design patterns
-#DP_BEHAVIORAL += chain-of-responsibility
+DP_BEHAVIORAL += chain-of-responsibility
 DP_BEHAVIORAL += command
 #DP_BEHAVIORAL += interpreter
 DP_BEHAVIORAL += iterator
