@@ -1,11 +1,13 @@
 # Design Patterns
 
-Included in this repository are simple C implementations of the design
-patterns described in [Design Patterns](http://catalogue.pearsoned.co.uk/educator/product/Design-Patterns-Elements-of-Reusable-ObjectOriented-Software/9780201633610.page)
-by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (collectively known as the Gang of Four).
+Included in this repository are simple C implementations of the design patterns
+described in [Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns)
+by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (collectively
+known as the Gang of Four).
 
 This is more of a personal challenge to work through all the design
 patterns over time and have an example implementation for reference.
+
 
 # Why C?
 
