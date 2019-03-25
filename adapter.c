@@ -17,7 +17,7 @@
  *   unforeseen classes, that is, classes that don't necessarily have compatible
  *   interfaces.
  * - (object adapter only) You need to use several existing subclasses, but it's
- *   impractical to adapte their interface by sublcassing every one. An object
+ *   impractical to adapt their interface by subclassing every one. An object
  *   adapter can adapt the interface of its parent class.
  */
 

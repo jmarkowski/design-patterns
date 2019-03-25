@@ -15,7 +15,7 @@
  * - Both the abstractions and their implementations should be extensible by
  *   subclassing. In this case, the Bridge pattern lets you combine the
  *   different abstractions and implementations and extend them independently.
- * - Changes in the implmentation of an abstraction should have no impact on its
+ * - Changes in the implementation of an abstraction should have no impact on its
  *   clients; that is, their code should not have to be recompiled.
  */
 

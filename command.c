@@ -15,7 +15,7 @@
  *   that is a function that's registered somewhere to be called at a later
  *   point. Commands are an object-oriented replacement for callbacks.
  * - You want to specify, queue, and execute requests at different times. A
- *   Command ojbject can have a lifetime independent of the original request.
+ *   Command object can have a lifetime independent of the original request.
  * - You want to support undo. The Command's Execute operation can store state
  *   for reversing its effects in the command itself. The Command interface must
  *   have an added Unexecute operation that reverses the effects of a previous
@@ -31,7 +31,7 @@
  *   primitives operations. Such a structure is common in information systems
  *   that support transactions. A transaction encapsulates a set of changes to
  *   data. The Command pattern offers a way to model transactions. Commands have
- *   a commoin interface, letting you invoke all transactions the same way. The
+ *   a common interface, letting you invoke all transactions the same way. The
  *   pattern also makes it easy to extend the system with new transactions.
  */
 /* i.e. The object that will execute a command's action */

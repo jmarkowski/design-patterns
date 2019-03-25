@@ -21,7 +21,7 @@
 typedef struct Director_s Director_t;
 
 /*
- * This is typically an abstract interface that specifies how to creat parts of
+ * This is typically an abstract interface that specifies how to create parts of
  * a Product object.
  */
 typedef struct Builder_s Builder_t;
