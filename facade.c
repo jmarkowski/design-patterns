@@ -35,7 +35,7 @@ typedef struct Facade_s Facade_t;
 /*
  * The Subsystem class implements the subsystem functionality. It handles work
  * assigned by the Facade object, yet it does not have any knowledge of the
- * facade (i.e. they keep no references to it.
+ * facade (i.e. they keep no references to it.)
  */
 typedef struct Subsystem_s Subsystem_t;
 
