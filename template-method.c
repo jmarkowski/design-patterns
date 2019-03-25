@@ -11,8 +11,8 @@
 /**
  * Use the Template Method pattern
  * - To implement the invariant parts of an algorithm once and leave it up to
- *   subclasses to implement the behaviour that can vary.
- * - When common behaviour among subclasses should be factored and localized in
+ *   subclasses to implement the behavior that can vary.
+ * - When common behavior among subclasses should be factored and localized in
  *   a common class to avoid code duplication. This is a good example of
  *   "refactoring to generalize". You first identify the differences in the
  *   existing code and then separate the differences into new operations.

@@ -20,7 +20,7 @@ DP_STRUCTURAL += facade
 DP_STRUCTURAL += flyweight
 DP_STRUCTURAL += proxy
 
-# Behavioural design patterns
+# Behavioral design patterns
 DP_BEHAVIORAL += chain-of-responsibility
 DP_BEHAVIORAL += command
 DP_BEHAVIORAL += interpreter
@@ -41,7 +41,7 @@ creational: $(DP_CREATIONAL)
 
 structural: $(DP_STRUCTURAL)
 
-behavioural: $(DP_BEHAVIORAL)
+behavioral: $(DP_BEHAVIORAL)
 
 abstract-factory: abstract-factory.c
 	gcc $(CFLAGS) -o $@ $<

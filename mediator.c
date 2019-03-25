@@ -8,7 +8,7 @@
  *   promotes loose coupling by keeping objects from referring to each other
  *   explicitly, and it lets you vary their interaction independently.
  *
- *   The Mediator encapsulates collective behaviour. It is responsible for
+ *   The Mediator encapsulates collective behavior. It is responsible for
  *   controlling and coordinating the interactions of a group of objects. These
  *   objects only know the mediator, thus reducing the number of
  *   interconnections.
@@ -20,7 +20,7 @@
  *   resulting interdependencies are unstructured and difficult to understand.
  * - Reusing an object is difficult because it refers to and communicates with
  *   many other objects.
- * - A behaviour that's distributed between several classes should be
+ * - A behavior that's distributed between several classes should be
  *   customizable without a lot of subclassing.
  */
 
