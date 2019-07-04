@@ -43,74 +43,8 @@ structural: $(DP_STRUCTURAL)
 
 behavioral: $(DP_BEHAVIORAL)
 
-abstract-factory: abstract-factory.c
-	gcc $(CFLAGS) -o $@ $<
-
-builder: builder.c
-	gcc $(CFLAGS) -o $@ $<
-
-factory-method: factory-method.c
-	gcc $(CFLAGS) -o $@ $<
-
-prototype: prototype.c
-	gcc $(CFLAGS) -o $@ $<
-
-singleton: singleton.c
-	gcc $(CFLAGS) -o $@ $<
-
-adapter: adapter.c
-	gcc $(CFLAGS) -o $@ $<
-
-bridge: bridge.c
-	gcc $(CFLAGS) -o $@ $<
-
-composite: composite.c
-	gcc $(CFLAGS) -o $@ $<
-
-decorator: decorator.c
-	gcc $(CFLAGS) -o $@ $<
-
-facade: facade.c
-	gcc $(CFLAGS) -o $@ $<
-
-flyweight: flyweight.c
-	gcc $(CFLAGS) -o $@ $<
-
-proxy: proxy.c
-	gcc $(CFLAGS) -o $@ $<
-
-chain-of-responsibility: chain-of-responsibility.c
-	gcc $(CFLAGS) -o $@ $<
-
-command: command.c
-	gcc $(CFLAGS) -o $@ $<
-
-interpreter: interpreter.c
-	gcc $(CFLAGS) -o $@ $<
-
-iterator: iterator.c
-	gcc $(CFLAGS) -o $@ $<
-
-mediator: mediator.c
-	gcc $(CFLAGS) -o $@ $<
-
-memento: memento.c
-	gcc $(CFLAGS) -o $@ $<
-
-observer: observer.c
-	gcc $(CFLAGS) -o $@ $<
-
-state: state.c
-	gcc $(CFLAGS) -o $@ $<
-
-strategy: strategy.c
-	gcc $(CFLAGS) -o $@ $<
-
-template-method: template-method.c
-	gcc $(CFLAGS) -o $@ $<
-
-visitor: visitor.c
-	gcc $(CFLAGS) -o $@ $<
+%:
+	gcc $(CFLAGS) -o $@ $(addsuffix .c,$@)
 
 clean:
 	rm -rf $(DP_ALL)
