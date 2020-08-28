@@ -83,7 +83,7 @@ int main(void)
 
     /*
      * Let's do some work with concrete prototype p1, followed by p2, notice
-     * that the operation only cares that it's working on a prototype type
+     * that the operation only cares that it's working on a prototype type.
      */
     operation(p1);
     operation(p2);

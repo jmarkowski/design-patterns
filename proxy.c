@@ -92,7 +92,7 @@ int main(void)
     Subject_t *proxy = newProxy(realSubject);
 
     /* At this point, we haven't created any objects... It's not until we use
-     * the proxy that we'll creat the object */
+     * the proxy that we'll create the object */
     printf("FIRST REQUEST\n");
     proxy->request(proxy);
 
